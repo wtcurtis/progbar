@@ -1,0 +1,61 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <link rel="stylesheet" href="css/css3-progress-bar.css">
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700'   rel='stylesheet' type='text/css'>
+        <meta charset='utf-8'>
+        <meta http-equiv="X-UA-Compatible" content="chrome=1">
+        <title>CSS3 Progress bars</title>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <script type="text/javascript" src="js/progbar.js"></script>
+        <script type="text/javascript">
+            var bar1, colorIndex = 0, goNuts = false;
+            $(document).ready(function() {
+                bar1 = new prog('.bar_container', {
+                    'rounded': true,
+                    'color': 'green',
+                    'containerColor': 'default'
+                });
+                $('#progIncrease').click(function() {
+                    bar1.step(5);
+                });
+                $('#progDecrease').click(function() {
+                    bar1.step(-5);
+                });
+                $('#colorSelect').change(function(s) {
+                    bar1.setColor($(s.target).val());
+                });
+                $('#gonuts').click(function() {
+                    goNuts = !goNuts;
+                    if(goNuts) oscillate(1);
+                });
+                var oscillate= function(direction) {
+                    bar1.setColor(
+                        prog.prototype.availableColors[colorIndex % 6]
+                    );
+                    bar1.step(direction*2);
+                    if(bar1.progress >= 100 || bar1.progress <= 0) { 
+                        direction *= -1 
+                    }
+                    colorIndex++;
+                    if(goNuts) setTimeout(function() { oscillate(direction) }, 10);
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <div class="bar_container"></div>
+        <button id="progIncrease" type="button">+</button>
+        <button id="progDecrease" type="button">-</button>
+        <select id="colorSelect">
+            <option value="blue">Blue</option>
+            <option value="orange">Orange</option>
+            <option value="purple">Purple</option>
+            <option value="pink">Pink</option>
+            <option value="green">Green</option>
+            <option value="default">Default</option>
+        </select>
+        <input type="checkbox" value="Tiny">Tiny
+        <br><button id="gonuts" type="button">Freak the fuck out</button>
+    </body>
+</html>
